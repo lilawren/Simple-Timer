@@ -3,44 +3,40 @@ import sys
 from tkinter import *
 
 
+def run_timer():
+    global seconds, minutes, timer, v
+
+    print("Pressed the button")
+
+    if minutes == 0 and seconds == 0:
+        return
+    elif seconds == 0:
+        minutes -= 1
+        seconds = 59
+    else:
+        seconds -= 1
+    timer.configure(text=v)
+    v.set(str("\r{minutes} Minutes {seconds} Seconds".format(minutes=minutes, seconds=seconds)))
+    root.after(1000, run_timer())
 
 
-def run_timer_label(label):
-    global minutes
-    def run_timer():
-        global seconds
-        global minutes
-        minutes = e1.get()
-        label.config(text=str("\r{minutes} Minutes {seconds} Seconds".format(minutes=minutes, seconds=seconds)))
-
-        '''if minutes == 0 and seconds == 0:
-            return
-        elif seconds == 0:
-            minutes -= 1
-            seconds = 59
-        else:
-            seconds -= 1'''
-        label.after(1000, run_timer)
-
-    print(minutes)
-    minutes = e1.get()
-    run_timer()
-
-root = Tk()
-root.title("Meditation Timer")
-
-minutes = IntVar()
-minutes.set(0)
+minutes = 2
 seconds = 0
 
-label = Label(root, fg="green")
-label.pack()
+
+root = Tk()
+v = StringVar()
+v.set("")
+root.title("Meditation Timer")
+
+timer = Label(root, textvariable=v, fg="green")
+timer.pack()
 
 e1 = Entry(root)
 e1.pack()
 
-b2 = Button(root, text='Start Timer', command=(run_timer_label(label)))
-b2.pack()
+start = Button(root, text='Start Timer', command=run_timer)
+start.pack()
 
 root.mainloop()
 
